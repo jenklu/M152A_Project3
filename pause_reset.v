@@ -28,15 +28,13 @@ input pause;
 input rst;
 input clk;
 input [5:0] counter_logic;
-output [5:0] next;
-reg [5:0] rnext;
+output reg [5:0] next;
 always@(posedge clk) begin
     if(rst) begin
-        rnext = 6'd0;
+        next = 6'd0;
     end    
     else if(pause == 0) begin
-        rnext = counter_logic;
+        next = counter_logic;
     end
 end
-assign next = rnext;
 endmodule
