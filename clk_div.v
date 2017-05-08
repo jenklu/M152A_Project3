@@ -47,7 +47,7 @@ always@(posedge sys_clk) begin
         fast_counter = 19'd0;
         //we use count_fast_high so that we know when a full second has passed
         if(count_fast_high == 7'd101) begin
-            count_fast_high = 0;
+            count_fast_high = 1;
         end
         else begin
             count_fast_high = count_fast_high + 1;
@@ -60,17 +60,31 @@ always@(posedge sys_clk) begin
     if(count_fast_high == 7'd100) begin
         onehz_clk = 1;
         twohz_clk = 1;
+        blink_clk = 1;
+    end
+    //blink clk will be high 3x a second
+    else if(count_fast_high = 7'd33) begin
+        twohz_clk = 0;
+        onehz_clk = 0;
+        blink_clk = 1;
+    end
+    else if(count_fast_high = 7'd66) begin
+        twohz_clk = 0;
+        onehz_clk = 0;
+        blink_clk = 1;
     end
     //The 2 Hz clk should go high 2x per second, so we have it go high ever 50 count_fast high (aka 50,000,000 clock ticks)
     // i.e. at 50 count_fast_high AND 100 count_fast_high
     else if(count_fast_high == 7'd50) begin
         twohz_clk = 1;
         onehz_clk = 0;
+        blink_clk = 0;
     end
     //Our clocks will only be high for one clock tick
     else
         twohz_clk = 0;
         onehz_clk = 0;
+        blink_clk = 0;
     end
 end    
 
