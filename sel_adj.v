@@ -32,35 +32,30 @@ input fast_clk;
 input [5:0] minutes;
 input [5:0] seconds;
 
-reg [5:0] temp_minutes;
-reg [5:0] temp_seconds;
+output reg [5:0] new_minutes;
+output reg [5:0] new_seconds;
 
-output [5:0] new_minutes;
-output [5:0] new_seconds;
-
-// If adj = 0, stopwatch behaves normally
-if (!adj) begin
-	always @ (posedge clk) begin
-		temp_minutes = minutes;
-		temp_seconds = seconds;
+always @ (posedge clk) begin
+    // If adj = 0, stopwatch behaves normally
+    if (!adj) begin
+        new_minutes = minutes;
+        new_seconds = seconds;
+    end
 end
 // else stopwatch stops and ‘Selected’ increases at 2Hz
-else begin
-	always @ (posedge fast_clk) begin
+always @ (posedge fast_clk) begin
+    if (adj) begin
 		// If sel = 1, adjust seconds
 		if (sel) begin
-			temp_minutes = minutes;
-			temp_seconds = seconds;
+			new_minutes = minutes;
+			new_seconds = seconds;
 		end
 		// else adjust minutes
 		else begin
-			temp_seconds = seconds;
-			temp_minutes = minutes;
+			new_minutes = seconds;
+			new_seconds = minutes;
 		end
 	end
 end    
-
-new_minutes = temp_minutes;
-new_seconds = temp_seconds;
 
 endmodule
