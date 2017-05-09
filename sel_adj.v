@@ -46,11 +46,12 @@ always @ (posedge clk) begin
         min_clk = reach_60;
 	sec_clk = onehz_clk;
     end 
+    // else adjust seconds, freeze minutes
     else if (sel == 1) begin
 	sec_clk = twohz_clk;
 	min_clk = 0;
     end
-    // else adjust minutes
+    // else adjust minutes, freeze seconds
     else begin
 	min_clk = twohz_clk;
 	sec_clk = 0;
