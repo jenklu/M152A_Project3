@@ -20,42 +20,40 @@
 //////////////////////////////////////////////////////////////////////////////////
 module sel_adj(
 //Input
-sel, adj, clk, fast_clk, minutes, seconds,
+sel, adj, clk, onehz_clk, twohz_clk, minutes, seconds,
 //Ouput
 new_minutes, new_seconds
     );
 
 input sel;
 input adj;
-input clk;
-input fast_clk;
-input [5:0] minutes;
-input [5:0] seconds;
+input onehz_clk;
+input twohz_clk;
 
 output reg [5:0] new_minutes;
 output reg [5:0] new_seconds;
-
+reg ignore;
+reg min_clk [5:0];
+reg sec_clk [5:0];
+reg reach_60;
+counter min_counter(.clk(min_clk), .next(new_minutes), .reach60(ignore));
+counter sec_counter(.clk(sec_clk), .next(new_seconds), .reach60(reach_60);
+	
 always @ (posedge clk) begin
     // If adj = 0, stopwatch behaves normally
     if (!adj) begin
-        new_minutes = minutes;
-        new_seconds = seconds;
+        min_clk = reach_60;
+	sec_clk = onehz_clk;
+    end 
+    else if (sel == 1) begin
+	sec_clk = twohz_clk;
+	min_clk = 0;
     end
-end
-// else stopwatch stops and ‘Selected’ increases at 2Hz
-always @ (posedge fast_clk) begin
-    if (adj) begin
-		// If sel = 1, adjust seconds
-		if (sel) begin
-			new_minutes = minutes;
-			new_seconds = seconds;
-		end
-		// else adjust minutes
-		else begin
-			new_minutes = seconds;
-			new_seconds = minutes;
-		end
-	end
+    // else adjust minutes
+    else begin
+	min_clk = twohz_clk;
+	sec_clk = 0;
+    end
 end    
 
 endmodule
