@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module counter(
 //Inputs
-clk,
+clk, pause, rst,
 //Outputs
 next, reach60
     );
@@ -28,13 +28,25 @@ input clk;
 output reg [5:0] next;
 output reg reach60;
 always@posedge(clk) begin
-    if(next == 6'd59) begin
+    // If reset
+    if (rst) begin
         next = 6'd0;
-        reach60 = 1;
-    end
-    else begin
         reach60 = 0;
-        next = next + 1;
+    end
+    // If pause
+    if (pause) begin
+        next = next;
+    end
+    // Normal counter
+    else begin
+        if(next == 6'd59) begin
+            next = 6'd0;
+            reach60 = 1;
+        end
+        else begin
+            reach60 = 0;
+            next = next + 1;
+        end
     end
 end
 endmodule
