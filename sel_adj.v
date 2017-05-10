@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module sel_adj(
 //Input
-sel, adj, clk, onehz_clk, twohz_clk, minutes, seconds,
+sel, adj, clk, onehz_clk, twohz_clk, pause, rst,
 //Ouput
 new_minutes, new_seconds
     );
@@ -29,6 +29,8 @@ input sel;
 input adj;
 input onehz_clk;
 input twohz_clk;
+input pause;
+input rst;
 
 output reg [5:0] new_minutes;
 output reg [5:0] new_seconds;
@@ -37,8 +39,8 @@ reg min_clk;
 reg sec_clk;
 reg reach_60;
 
-counter min_counter(.clk(min_clk), .next(new_minutes), .reach60(ignore));
-counter sec_counter(.clk(sec_clk), .next(new_seconds), .reach60(reach_60));
+counter min_counter(.clk(min_clk), .pause(pause), .rst(rst), .next(new_minutes), .reach60(ignore));
+counter sec_counter(.clk(sec_clk), .pause(pause), .rst(rst), .next(new_seconds), .reach60(reach_60));
 	
 always @ (posedge clk) begin
     // If adj = 0, stopwatch behaves normally
