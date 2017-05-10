@@ -36,6 +36,7 @@ always@posedge(clk) begin
     // If pause
     if (pause) begin
         next = next;
+        reach60 = 0;
     end
     // Normal counter
     else begin
