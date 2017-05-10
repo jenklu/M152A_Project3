@@ -39,14 +39,14 @@ module debouncer(
 
 
   always @ (posedge clk) begin
-    if (debounce == sync_to_clk1) begin
-	    counter <= 0;
-	  end
-		else begin
-		  counter <= counter + 1'b1;
-			  if (counter == 16'hffff) begin
-	     	  debounce <= ~debouce;
-				end
-    end
+  	if (debounce == sync_to_clk1) begin
+		counter <= 0;
+	end
+	else begin
+		counter <= counter + 1'b1;
+		if (counter == 16'hffff) begin
+	     		debounce <= ~debouce;
+		end
+        end
   end
 endmodule
