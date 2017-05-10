@@ -20,9 +20,9 @@ timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 module display(
 //Inputs
-min, sec, fast_clk
+min, sec, fast_clk,
 //Outputs
-
+anode_vec, cathode_vec
     );
 input [5:0] min;
 input [5:0] sec;
