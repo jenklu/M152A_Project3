@@ -67,17 +67,17 @@ always @ (posedge fast_clk) begin
         end
     endcase
     case(curr_dig)
-        0: cathode_vec = 7'b1111110
-        1: cathode_vec = 7'b0110000
-        2: cathode_vec = 7'b1101101
-        3: cathode_vec = 7'b1111001
-        4: cathode_vec = 7'b0110011
-        5: cathode_vec = 7'b1011011
-        6: cathode_vec = 7'b1011111
-        7: cathode_vec = 7'b1110000
-        8: cathode_vec = 7'b1111111
-        9: cathode_vec = 7'b1110011
-        default: cathode_vec = 7'b0110111
+        0: cathode_vec = 7'b0000001 //
+        1: cathode_vec = 7'b1001111
+        2: cathode_vec = 7'b0010010 //
+        3: cathode_vec = 7'b0000110 //
+        4: cathode_vec = 7'b1001100 //
+        5: cathode_vec = 7'b0100100 //
+        6: cathode_vec = 7'b0100000 //
+        7: cathode_vec = 7'b0001111 //
+        8: cathode_vec = 7'b0000000 //
+        9: cathode_vec = 7'b0001100 //
+        default: cathode_vec = 7'b1001000
     endcase
 end
 reg [1:0] highlow;
@@ -96,5 +96,5 @@ always @ posedge(blink_clk) begin
         mask = 4'b1111;
     end
 end
-assign anode_vec = anode_vec_temp & mask;
+assign anode_vec = ~(anode_vec_temp & mask);
 endmodule
