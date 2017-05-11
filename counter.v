@@ -25,9 +25,12 @@ clk, pause, rst,
 next, reach60
     );
 input clk;
+input pause;
+input rst;
+
 output reg [5:0] next;
 output reg reach60;
-always@posedge(clk) begin
+always @ (posedge clk) begin
     // If reset
     if (rst) begin
         next = 6'd0;

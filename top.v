@@ -1,11 +1,11 @@
-timescale 1ns / 1ps
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
 // 
 // Create Date:    16:58:21 05/03/2017 
 // Design Name: 
-// Module Name:    counter 
+// Module Name:    top 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -30,7 +30,7 @@ input rst;
 input pause;
 input clk;
 output [3:0] anode_vec;
-output [4:0] cathode_vec;
+output [6:0] cathode_vec;
 //Signals internal ot the module
 wire sel_db;
 wire adj_db;
@@ -41,12 +41,12 @@ wire twohz_clk;
 wire fast_clk;
 wire blink_clk;
 //Divide clock into slower clocks to be passed to other modules
-clk_div clock_divider(.sys_clk(clk), .rst(rst_db), .onehz_clk(onehz_clk), .twohz_clk(twohz_clk), .fast_clk(fast_clk), .blink_clk(blink_clk));
+clock_divider clk_div(.sys_clk(clk), .rst(rst_db), .onehz_clk(onehz_clk), .twohz_clk(twohz_clk), .fast_clk(fast_clk), .blink_clk(blink_clk));
 //Debounce inputs
-debouncer sel_db(.clk(clk), .button(sel), .debounce(sel_db));
-debouncer adj_db(.clk(clk), .button(adj), .debounce(adj_db));
-debouncer rst_db(.clk(clk), .button(rst), .debounce(rst_db));
-debouncer pause_db(.clk(clk), .button(pause), .debounce(pause_db));
+debouncer_metastability sel_db_func(.clk(clk), .button(sel), .bounce_state(sel_db));
+debouncer_metastability adj_db_func(.clk(clk), .button(adj), .bounce_state(adj_db));
+debouncer_metastability rst_db_func(.clk(clk), .button(rst), .bounce_state(rst_db));
+debouncer_metastability pause_db_func(.clk(clk), .button(pause), .bounce_state(pause_db));
 //Main counting logic
 wire [5:0] minutes;
 wire [5:0] seconds;

@@ -18,13 +18,18 @@
 // Additional Comments:
 //
 //////////////////////////////////////////////////////////////////////////////////
-module debouncer(
+module debouncer_metastability(
     //Inputs
     clk, button,
     //Outputs
     bounce_state
     );
 
+	 input clk;
+	 input button;
+    output bounce_state;
+	 reg bounce_state_temp;
+	 reg [7:0] debounce;
     // Filter out the noise by sampling at a lower frequency than the noise
     // TODO: what clk should be passed in
 
@@ -34,13 +39,14 @@ module debouncer(
     always @ (posedge clk) begin
         debounced <= {debounced[6:0], button};
         if (debounced == 8'b00000000) begin
-            bounce_state <= 1'b0;
+            bounce_state_temp <= 1'b0;
         end
-        else if (debounced == 8'b11111111);
-            bounce_state <= 1'b1;
+        else if (debounced == 8'b11111111) begin
+            bounce_state_temp <= 1'b1;
         end
         else begin
-            bounce_state <= bounce_state;
+            bounce_state_temp <= bounce_state;
         end
     end
+	 assign bounce_state = bounce_state_temp;
 endmodule

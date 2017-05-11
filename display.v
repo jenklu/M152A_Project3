@@ -1,4 +1,4 @@
-timescale 1ns / 1ps
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -24,14 +24,19 @@ min, sec, fast_clk, blink_clk, sel, adj,
 //Outputs
 anode_vec, cathode_vec
     );
+	 
 input [5:0] min;
 input [5:0] sec;
 input fast_clk;
+input blink_clk;
+input sel;
+input adj;
+
 //anode_vec of form: [ AN3 AN2 AN1 AN0 ]
 output [3:0] anode_vec;
 //cathode_vec of form: [ CA CB CC CD CE CF CG ]
 output reg[6:0] cathode_vec;
-wire [3:0] digits [3:0];
+wire [3:0] digits;
 //Integer division truncates, so this works to extract the 1s digit
 assign digits[3] = min/10;
 assign digits[1] = min/10;
@@ -67,26 +72,26 @@ always @ (posedge fast_clk) begin
         end
     endcase
     case(curr_dig)
-        0: cathode_vec = 7'b0000001 //
-        1: cathode_vec = 7'b1001111
-        2: cathode_vec = 7'b0010010 //
-        3: cathode_vec = 7'b0000110 //
-        4: cathode_vec = 7'b1001100 //
-        5: cathode_vec = 7'b0100100 //
-        6: cathode_vec = 7'b0100000 //
-        7: cathode_vec = 7'b0001111 //
-        8: cathode_vec = 7'b0000000 //
-        9: cathode_vec = 7'b0001100 //
-        default: cathode_vec = 7'b1001000
+        0: cathode_vec = 7'b0000001; //
+        1: cathode_vec = 7'b1001111;
+        2: cathode_vec = 7'b0010010; //
+        3: cathode_vec = 7'b0000110; //
+        4: cathode_vec = 7'b1001100; //
+        5: cathode_vec = 7'b0100100; //
+        6: cathode_vec = 7'b0100000; //
+        7: cathode_vec = 7'b0001111; //
+        8: cathode_vec = 7'b0000000; //
+        9: cathode_vec = 7'b0001100; //
+        default: cathode_vec = 7'b1001000;
     endcase
 end
 reg [1:0] highlow;
 reg [3:0] mask;
-always @ posedge(blink_clk) begin
+always @ (posedge blink_clk) begin
     highlow = ~highlow;
     //If adjusting seconds, make the seconds anodes blink
     if(adj && sel) begin
-        mask = {1, 1, highlow};
+        mask[3:0] = {1, 1, highlow};
     end
     //If adjusting minutes, make the minutes anodes blink
     else if (adj && !sel) begin
