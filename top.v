@@ -53,6 +53,6 @@ wire [5:0] seconds;
 sel_adj adjust(.sel(sel_db), .adj(adj_db), .clk(clk), .onehz_clk(onehz_clk), .twohz_clk(twohz_clk), .pause(pause_db), .rst(rst_db),
 .new_minutes(minutes), .new_seconds(seconds));
 
-display seven_seg_disp(.min(minutes), .sec(seconds), .fast_clk(fast_clk), .blink_clk(blink_clk), .anode_vec(anode_vec), .cathod_vec(cathod_vec));
+display seven_seg_disp(.min(minutes), .sec(seconds), .fast_clk(fast_clk), .blink_clk(blink_clk), .sel(sel_db), .adj(adj_db), .anode_vec(anode_vec), .cathod_vec(cathod_vec));
 
 endmodule
