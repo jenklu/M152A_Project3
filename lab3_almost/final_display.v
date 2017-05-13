@@ -27,7 +27,7 @@ module final_display(
 	 
 	// Inputs and Outputs
 	input fast_clk;
-   input blink_clk;
+   	input blink_clk;
 	input sel;
 	input adj;
 	input [6:0] left_light;
@@ -82,7 +82,7 @@ module final_display(
 		else if (switch_segment == 2) begin
 			switch_segment <= switch_segment + 2'b1;
 			anode_vec_temp <= 4'b1101;
-			// Adjust seconds
+			// Adjust seconds (10's spot)
 			if (adj && sel) begin
 				if (blink_clk) begin
 					cathode_vec_temp <= middleright_light;
@@ -99,7 +99,7 @@ module final_display(
 		else if (switch_segment == 3) begin
 			switch_segment <= 2'b0;
 			anode_vec_temp <= 4'b1110;
-			// Adjust seconds
+			// Adjust seconds (1's spot)
 			if (adj && sel) begin
 				if (blink_clk) begin
 					cathode_vec_temp <= right_light;
