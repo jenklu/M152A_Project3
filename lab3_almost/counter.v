@@ -18,46 +18,6 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-/*module counter(
-//Inputs
-clk, pause, rst,
-//Outputs
-next, reach60
-    );
-input clk;
-input pause;
-input rst;
-
-output reg [5:0] next;
-output reg reach60;
-always @ (posedge clk) begin
-    // If reset
-    if (rst) begin
-        next = 6'd0;
-        reach60 = 0;
-    end
-    // If pause
-    if (pause) begin
-        next = next;
-        reach60 = 0;
-    end
-    // Normal counter
-    else begin
-        if(next == 6'd59) begin
-            next = 6'd0;
-            reach60 = 1;
-        end
-        else begin
-            reach60 = 0;
-            next = next + 1;
-        end
-    end
-end
-endmodule*/
-
-
-
-
 module counter(
 	//Inputs
 	onehz_clk, twohz_clk, pause, rst, sel, adj,
