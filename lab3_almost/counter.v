@@ -42,14 +42,9 @@ module counter(
 	
    sel_adj adjust(.adj(adj), .onehz_clk(onehz_clk), .twohz_clk(twohz_clk), .which_clk(clk));
 	
-	always @ (posedge onehz_clk or posedge pause) begin
-		if (pause) begin
-			is_pause <= ~is_pause;
-		end
-		else begin
-			is_pause <= is_pause;
-		end
-	end
+	always @ (posedge pause) begin
+        is_pause <= ~is_pause;
+    end
 	always @ (posedge clk or posedge rst) begin
 		// Reset 
 		if (rst) begin
@@ -88,28 +83,20 @@ module counter(
 			end
 			// Normal Clock Mode
 			else begin
-				// Pause
-				if (pause) begin
-					minutes_temp <= minutes;
-					seconds_temp <= seconds;
-				end
-				// Not pause
-				else begin
-					// If max stopwatch time, then reset both minutes and seconds
-					if (minutes_temp == 59 && seconds_temp == 59) begin
-						minutes_temp <= 5'b0;
-						seconds_temp <= 5'b0;
-					end
-					// If max seconds, then reset seconds, increment minutes
-					else if (minutes_temp != 59 && seconds_temp == 59) begin
-						minutes_temp <= minutes_temp + 5'b1;
-						seconds_temp <= 5'b0;
-					end
-					// No overflow in minutes or seconds, so increment seconds
-					else begin
-						seconds_temp <= seconds_temp + 5'b1;
-					end
-				end
+                // If max stopwatch time, then reset both minutes and seconds
+                if (minutes_temp == 59 && seconds_temp == 59) begin
+                    minutes_temp <= 5'b0;
+                    seconds_temp <= 5'b0;
+                end
+                // If max seconds, then reset seconds, increment minutes
+                else if (minutes_temp != 59 && seconds_temp == 59) begin
+                    minutes_temp <= minutes_temp + 5'b1;
+                    seconds_temp <= 5'b0;
+                end
+                // No overflow in minutes or seconds, so increment seconds
+                else begin
+                    seconds_temp <= seconds_temp + 5'b1;
+                end
 			end
 		end
 		end
